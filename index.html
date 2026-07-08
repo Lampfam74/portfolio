@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Papa Magueye Fam — PHP | Laravel Developer</title>
+<meta name="description" content="Papa Magueye Fam — Développeur FullStack PHP/Laravel, Lead IT, passionné de DevSecOps. Thiès, Sénégal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D1117;
+    --bg-elevated:#12171F;
+    --bg-card:#161B22;
+    --border:#262C36;
+    --border-soft:#1D232C;
+    --text:#E6EDF3;
+    --text-dim:#8B949E;
+    --text-faint:#5D6673;
+    --amber:#F0A868;
+    --amber-dim:#8A6640;
+    --cyan:#5CB6FF;
+    --green:#3FB950;
+    --red:#F0755C;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --sans:'Inter', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--amber); outline-offset:3px; border-radius:2px;}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+
+  /* background texture */
+  .grid-bg{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(230,237,243,0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(230,237,243,0.028) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  /* ---------- NAV ---------- */
+  header.site-nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(13,17,23,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    height:60px;
+  }
+  .brand{
+    font-family:var(--mono); font-weight:700; font-size:14px; letter-spacing:0.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .dot{width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); flex-shrink:0;}
+  nav.links{display:flex; gap:26px; font-family:var(--mono); font-size:12.5px;}
+  nav.links a{color:var(--text-dim); text-decoration:none; transition:color .15s;}
+  nav.links a:hover{color:var(--amber);}
+  @media (max-width:640px){ nav.links{display:none;} }
+
+  /* ---------- HERO / PIPELINE ---------- */
+  .hero{padding:76px 0 60px;}
+  .pipeline{
+    display:flex; align-items:center; gap:0;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.06em;
+    color:var(--text-faint); margin-bottom:40px; flex-wrap:wrap;
+  }
+  .pipeline .stage{
+    padding:6px 14px; border:1px solid var(--border); border-radius:5px;
+    text-transform:uppercase; position:relative; background:var(--bg-card);
+    transition:all .4s ease;
+  }
+  .pipeline .arrow{color:var(--border); padding:0 6px; font-size:12px;}
+  .pipeline .stage.active{
+    color:var(--bg); background:var(--amber); border-color:var(--amber);
+    box-shadow:0 0 18px rgba(240,168,104,0.35);
+  }
+
+  .eyebrow{
+    font-family:var(--mono); color:var(--cyan); font-size:12.5px;
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:'$'; color:var(--text-faint);}
+
+  h1.name{
+    font-family:var(--mono); font-weight:800; font-size:clamp(34px,6vw,58px);
+    line-height:1.08; letter-spacing:-0.01em; margin-bottom:14px;
+  }
+  h1.name .surname{color:var(--amber);}
+
+  .role-line{
+    font-size:clamp(16px,2.4vw,20px); color:var(--text-dim); font-weight:500;
+    margin-bottom:26px; max-width:640px;
+  }
+  .role-line strong{color:var(--text); font-weight:600;}
+
+  .objectif{
+    max-width:620px; color:var(--text-dim); font-size:15px; margin-bottom:34px;
+    border-left:2px solid var(--border); padding-left:18px;
+  }
+
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:46px;}
+  .btn{
+    font-family:var(--mono); font-size:13px; padding:10px 18px; border-radius:6px;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    border:1px solid var(--border); transition:all .15s ease;
+  }
+  .btn.primary{background:var(--amber); color:#1a1105; border-color:var(--amber); font-weight:700;}
+  .btn.primary:hover{background:#f4b87c;}
+  .btn.ghost{color:var(--text); background:transparent;}
+  .btn.ghost:hover{border-color:var(--cyan); color:var(--cyan);}
+
+  .stat-row{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden;
+  }
+  .stat{background:var(--bg-card); padding:18px 16px;}
+  .stat .num{font-family:var(--mono); font-size:24px; font-weight:700; color:var(--amber);}
+  .stat .label{font-size:11.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.05em; margin-top:4px;}
+  @media (max-width:640px){ .stat-row{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:64px 0;}
+  section + section{border-top:1px solid var(--border-soft);}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:34px;}
+  .sec-head .idx{font-family:var(--mono); color:var(--text-faint); font-size:13px;}
+  .sec-head h2{font-family:var(--mono); font-size:22px; font-weight:700;}
+  .sec-head .rule{flex:1; height:1px; background:var(--border);}
+
+  /* ---------- STACK ---------- */
+  .stack-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  @media (max-width:860px){ .stack-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:480px){ .stack-grid{grid-template-columns:1fr;} }
+  .stack-card{
+    background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:20px;
+    transition:border-color .15s;
+  }
+  .stack-card:hover{border-color:var(--amber-dim);}
+  .stack-card h3{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--cyan); margin-bottom:12px;}
+  .pill-set{display:flex; flex-wrap:wrap; gap:7px;}
+  .pill{
+    font-family:var(--mono); font-size:11.5px; padding:4px 9px; border-radius:20px;
+    border:1px solid var(--border); color:var(--text-dim);
+  }
+
+  /* ---------- EXPERIENCE (git log style) ---------- */
+  .log{position:relative; padding-left:26px;}
+  .log::before{content:''; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--border);}
+  .commit{position:relative; padding-bottom:36px;}
+  .commit:last-child{padding-bottom:0;}
+  .commit::before{
+    content:''; position:absolute; left:-26px; top:4px; width:11px; height:11px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--amber);
+  }
+  .commit.current::before{background:var(--amber); box-shadow:0 0 10px rgba(240,168,104,.6);}
+  .commit-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
+  .commit-head .hash{font-family:var(--mono); font-size:11.5px; color:var(--text-faint);}
+  .commit-head .badge{
+    font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
+    padding:2px 8px; border-radius:4px; border:1px solid var(--border); color:var(--text-dim);
+  }
+  .badge.now{color:var(--green); border-color:var(--green);}
+  .commit h3{font-size:17px; font-weight:700; margin-bottom:2px;}
+  .commit .org{color:var(--amber); font-weight:600; font-size:14px;}
+  .commit .dates{font-family:var(--mono); font-size:12px; color:var(--text-faint); margin-bottom:10px;}
+  .commit ul{list-style:none; color:var(--text-dim); font-size:14.5px; max-width:640px;}
+  .commit ul li{position:relative; padding-left:16px; margin-bottom:5px;}
+  .commit ul li::before{content:'+'; position:absolute; left:0; color:var(--green); font-family:var(--mono);}
+
+  /* ---------- PROJECTS (repo cards) ---------- */
+  .repo-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  @media (max-width:760px){ .repo-grid{grid-template-columns:1fr;} }
+  .repo-card{
+    background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:20px;
+    transition:transform .15s, border-color .15s;
+  }
+  .repo-card:hover{transform:translateY(-2px); border-color:var(--cyan);}
+  .repo-top{display:flex; align-items:center; gap:8px; margin-bottom:10px;}
+  .repo-icon{color:var(--text-faint); font-size:15px;}
+  .repo-name{font-family:var(--mono); font-weight:700; font-size:14.5px; color:var(--cyan);}
+  .repo-desc{color:var(--text-dim); font-size:13.5px; margin-bottom:16px; min-height:40px;}
+  .repo-meta{display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:11.5px; color:var(--text-faint);}
+  .lang-dot{width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:5px;}
+
+  /* ---------- EDUCATION ---------- */
+  .edu-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:700px){ .edu-grid{grid-template-columns:1fr;} }
+  .edu-card{border:1px solid var(--border); border-radius:8px; padding:18px 20px; background:var(--bg-card);}
+  .edu-card .yr{font-family:var(--mono); color:var(--amber); font-size:12px;}
+  .edu-card h3{font-size:15.5px; font-weight:700; margin:4px 0 2px;}
+  .edu-card p{color:var(--text-dim); font-size:13.5px;}
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  .contact-term{
+    background:var(--bg-card); border:1px solid var(--border); border-radius:10px;
+    padding:0; overflow:hidden;
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:6px; padding:10px 14px;
+    border-bottom:1px solid var(--border); background:var(--bg-elevated);
+  }
+  .term-bar span{width:10px; height:10px; border-radius:50%; display:inline-block;}
+  .term-bar .r{background:#F0755C;} .term-bar .y{background:#F0A868;} .term-bar .g{background:#3FB950;}
+  .term-bar .title{margin-left:10px; font-family:var(--mono); font-size:11.5px; color:var(--text-faint);}
+  .term-body{padding:22px 24px; font-family:var(--mono); font-size:13.5px;}
+  .term-body .line{margin-bottom:10px; display:flex; gap:10px; flex-wrap:wrap;}
+  .term-body .prompt{color:var(--green);}
+  .term-body .cmd{color:var(--text);}
+  .term-body .key{color:var(--cyan);}
+  .term-body a.val{color:var(--amber); text-decoration:none; border-bottom:1px dotted var(--amber-dim);}
+  .term-body a.val:hover{color:#f4c896;}
+
+  footer{padding:34px 0 60px; text-align:center; color:var(--text-faint); font-family:var(--mono); font-size:12px;}
+</style>
+</head>
+<body>
+
+<div class="grid-bg" aria-hidden="true"></div>
+
+<header class="site-nav">
+  <div class="wrap nav-inner">
+    <div class="brand"><span class="dot"></span> pmfam@portfolio:~$</div>
+    <nav class="links">
+      <a href="#stack">stack</a>
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#education">education</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="pipeline" id="pipeline">
+      <span class="stage" data-stage>BUILD</span><span class="arrow">→</span>
+      <span class="stage" data-stage>TEST</span><span class="arrow">→</span>
+      <span class="stage" data-stage>SECURE</span><span class="arrow">→</span>
+      <span class="stage" data-stage>DEPLOY</span><span class="arrow">→</span>
+      <span class="stage" data-stage>MONITOR</span>
+    </div>
+
+    <div class="eyebrow">whoami</div>
+    <h1 class="name">Papa Magueye <span class="surname">Fam</span></h1>
+    <p class="role-line"><strong>PHP | Laravel Developer</strong> — FullStack, Lead IT &amp; pratiques DevSecOps</p>
+    <p class="objectif">Passionné par le développement et les bonnes pratiques DevSecOps. Je conçois et améliore des architectures modernes en intégrant la sécurité dès la phase de développement (Shift‑Left), en automatisant les déploiements CI/CD et en assurant la stabilité, la performance et la conformité des systèmes en production.</p>
+
+    <div class="cta-row">
+      <a class="btn primary" href="https://github.com/Lampfam74" target="_blank" rel="noopener">↗ github.com/Lampfam74</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/papa-magueye-fam-lamp" target="_blank" rel="noopener">in/papa-magueye-fam-lamp</a>
+      <a class="btn ghost" href="mailto:papamagueyefaam@gmail.com">✉ papamagueyefaam@gmail.com</a>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="num">3+</div><div class="label">années d'expérience</div></div>
+      <div class="stat"><div class="num">10</div><div class="label">projets livrés</div></div>
+      <div class="stat"><div class="num">4</div><div class="label">rôles chez SEMIG‑SA</div></div>
+      <div class="stat"><div class="num">02</div><div class="label">langues parlées</div></div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="wrap">
+      <div class="sec-head"><span class="idx">01</span><h2>Stack</h2><span class="rule"></span></div>
+      <div class="stack-grid">
+        <div class="stack-card">
+          <h3>Front‑end</h3>
+          <div class="pill-set">
+            <span class="pill">HTML</span><span class="pill">CSS</span><span class="pill">JS</span>
+            <span class="pill">Angular</span><span class="pill">React</span><span class="pill">UI/UX</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <h3>Back‑end</h3>
+          <div class="pill-set">
+            <span class="pill">PHP</span><span class="pill">Laravel</span><span class="pill">Java</span>
+            <span class="pill">Java EE</span><span class="pill">Spring Boot</span><span class="pill">Golang (learning)</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <h3>SGBD</h3>
+          <div class="pill-set">
+            <span class="pill">SQL</span><span class="pill">PostgreSQL</span><span class="pill">NoSQL</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <h3>DevSecOps &amp; Outils</h3>
+          <div class="pill-set">
+            <span class="pill">Docker</span><span class="pill">Kubernetes</span><span class="pill">Helm</span>
+            <span class="pill">Linux</span><span class="pill">CI/CD</span><span class="pill">Bash</span>
+            <span class="pill">Cloud</span><span class="pill">Monitoring</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <h3>Gestion de projet</h3>
+          <div class="pill-set">
+            <span class="pill">Jira</span><span class="pill">Trello</span><span class="pill">Agile</span><span class="pill">Google Workspace</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head"><span class="idx">02</span><h2>Expérience</h2><span class="rule"></span></div>
+      <div class="log">
+
+        <div class="commit current">
+          <div class="commit-head">
+            <span class="hash">#4</span>
+            <span class="badge now">en cours</span>
+          </div>
+          <h3>Lead IT <span style="color:var(--text-faint); font-weight:400;">— CDI</span></h3>
+          <div class="org">SEMIG‑SA</div>
+          <div class="dates">Déc. 2023 → aujourd'hui</div>
+          <ul>
+            <li>Développement d'ERP, administration système et chef de projet informatique</li>
+            <li>IT Helpdesk et gestion du parc informatique (configuration, conception d'app, mise à jour des solutions existantes)</li>
+            <li>Formation et assistance du personnel sur les outils informatiques</li>
+          </ul>
+        </div>
+
+        <div class="commit">
+          <div class="commit-head"><span class="hash">#3</span><span class="badge">CDD</span></div>
+          <h3>Développeur web &amp; Assistant IT</h3>
+          <div class="org">SEMIG‑SA</div>
+          <div class="dates">Sept. 2023 → Nov. 2023</div>
+          <ul>
+            <li>Mise en place et développement d'une application de gestion de ticketing parking pour la Gare des Gros Porteurs</li>
+            <li>Gestion du parc informatique</li>
+          </ul>
+        </div>
+
+        <div class="commit">
+          <div class="commit-head"><span class="hash">#2</span><span class="badge">temps plein</span></div>
+          <h3>Développeur web &amp; Assistant IT</h3>
+          <div class="org">SEMIG‑SA</div>
+          <div class="dates">Sept. 2022 → Août 2023</div>
+          <ul>
+            <li>Développement d'une application de ticketing péage min et pont bascule au Marché d'Intérêt National</li>
+            <li>Testeur UAT sur les applications développées par les entreprises prestataires</li>
+            <li>Formation et assistance du personnel sur les outils informatiques</li>
+          </ul>
+        </div>
+
+        <div class="commit">
+          <div class="commit-head"><span class="hash">#1</span><span class="badge">stage</span></div>
+          <h3>Développeur web &amp; Assistant IT</h3>
+          <div class="org">SEMIG‑SA</div>
+          <div class="dates">Avril 2022 → Août 2022</div>
+          <ul>
+            <li>Mise en place, développement et maintenance du site internet du Marché d'Intérêt National et de la Gare des Gros Porteurs</li>
+            <li>Management du projet de digitalisation du Marché d'Intérêt National et de la Gare des Gros Porteurs</li>
+            <li>Formation et assistance du personnel sur les outils informatiques</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head"><span class="idx">03</span><h2>Projets</h2><span class="rule"></span></div>
+      <div class="repo-grid">
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">▣</span><span class="repo-name">gestion-ticketing-peage</span></div>
+          <p class="repo-desc">Logiciel de gestion de tickets caisse pour le péage, construit avec le framework Laravel.</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#F0A868;"></span>Laravel</span><span>PHP</span></div>
+        </div>
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">▣</span><span class="repo-name">erp-semig</span></div>
+          <p class="repo-desc">ERP de gestion des processus métiers de la SEMIG.</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#F0A868;"></span>Laravel</span><span>PHP</span></div>
+        </div>
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">▣</span><span class="repo-name">rh-pointage</span></div>
+          <p class="repo-desc">Gestion des ressources humaines et pointage pour évaluer le personnel.</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#F0A868;"></span>Laravel</span><span>PHP</span></div>
+        </div>
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">▣</span><span class="repo-name">bibliotheque-numerique</span></div>
+          <p class="repo-desc">Projet de fin de formation — bibliothèque numérique développée pour l'ISEP.</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#F0A868;"></span>Laravel</span><span>PHP</span></div>
+        </div>
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">▣</span><span class="repo-name">check-secure</span></div>
+          <p class="repo-desc">Gestion des entrées et sorties pour les agents de sécurité.</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#F0A868;"></span>Laravel</span><span>PHP</span></div>
+        </div>
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">▣</span><span class="repo-name">min-gros-porteurs-site</span></div>
+          <p class="repo-desc">Site web institutionnel du Marché d'Intérêt National et de la Gare des Gros Porteurs.</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#5CB6FF;"></span>WordPress</span></div>
+        </div>
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">▣</span><span class="repo-name">nieuw-na-semig</span></div>
+          <p class="repo-desc">Logiciel de gestion des visites, baptisé « NIEUW NA SEMIG ».</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#F0A868;"></span>Laravel</span><span>PHP</span></div>
+        </div>
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">🛡</span><span class="repo-name">devsecops-pipeline</span></div>
+          <p class="repo-desc">Intégration de la sécurité dans un environnement DevOps — projet de fin de licence pro, avec Helm et Kubernetes.</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#3FB950;"></span>Kubernetes / Helm</span></div>
+        </div>
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">🛡</span><span class="repo-name">pentest-semig</span></div>
+          <p class="repo-desc">Test d'intrusion effectué pour évaluer le niveau réel de sécurité du réseau de la SEMIG face à un attaquant.</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#F0755C;"></span>Sécurité</span></div>
+        </div>
+
+        <div class="repo-card">
+          <div class="repo-top"><span class="repo-icon">⚙</span><span class="repo-name">windows-server-setup</span></div>
+          <p class="repo-desc">Installation et configuration d'un serveur Windows Server.</p>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#8B949E;"></span>Infra</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <div class="sec-head"><span class="idx">04</span><h2>Éducation</h2><span class="rule"></span></div>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="yr">2024 – 2025</div>
+          <h3>Licence Cybersécurité &amp; Cyberdéfense</h3>
+          <p>Colomb Academy of Technologie</p>
+        </div>
+        <div class="edu-card">
+          <div class="yr">2023</div>
+          <h3>BI — Business Intelligence</h3>
+          <p>Gomycode</p>
+        </div>
+        <div class="edu-card">
+          <div class="yr">—</div>
+          <h3>DISEP / BTS — Développement Web &amp; Mobile</h3>
+          <p>ISEP Diamniadio</p>
+        </div>
+        <div class="edu-card">
+          <div class="yr">2019</div>
+          <h3>Baccalauréat, série S2</h3>
+          <p>Lycée Médina Fall</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head"><span class="idx">05</span><h2>Contact</h2><span class="rule"></span></div>
+      <div class="contact-term">
+        <div class="term-bar">
+          <span class="r"></span><span class="y"></span><span class="g"></span>
+          <span class="title">contact.sh</span>
+        </div>
+        <div class="term-body">
+          <div class="line"><span class="prompt">$</span><span class="cmd">./contact --info</span></div>
+          <div class="line"><span class="key">email</span> → <a class="val" href="mailto:papamagueyefaam@gmail.com">papamagueyefaam@gmail.com</a></div>
+          <div class="line"><span class="key">phone</span> → <a class="val" href="tel:+221778929658">+221 77 892 96 58</a> / <a class="val" href="tel:+221778869790">77 886 97 90</a></div>
+          <div class="line"><span class="key">location</span> → <span class="cmd">Médina Fall, Thiès, Sénégal</span></div>
+          <div class="line"><span class="key">github</span> → <a class="val" href="https://github.com/Lampfam74" target="_blank" rel="noopener">Lampfam74</a></div>
+          <div class="line"><span class="key">linkedin</span> → <a class="val" href="https://www.linkedin.com/in/papa-magueye-fam-lamp" target="_blank" rel="noopener">papa-magueye-fam-lamp</a></div>
+          <div class="line"><span class="key">languages</span> → <span class="cmd">Français, Anglais technique</span></div>
+          <div class="line"><span class="prompt">$</span><span class="cmd" style="color:var(--text-faint);">references --available on-request_</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Papa Magueye Fam — built with Laravel energy, deployed with care.</div>
+</footer>
+
+<script>
+  // pipeline stage loop — echoes the CI/CD / DevSecOps identity
+  (function(){
+    var stages = document.querySelectorAll('#pipeline .stage');
+    var i = 0;
+    function tick(){
+      stages.forEach(function(s){ s.classList.remove('active'); });
+      stages[i].classList.add('active');
+      i = (i + 1) % stages.length;
+    }
+    tick();
+    setInterval(tick, 1400);
+  })();
+</script>
+
+</body>
+</html>
