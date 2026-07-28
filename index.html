@@ -327,6 +327,78 @@ code {
     gap: 10px;
 }
 
+/* ---------- Cadre photo "flux vidéo" ---------- */
+
+.avatar-feed {
+    background: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 8px 10px;
+    margin-bottom: 4px;
+}
+
+.avatar-feed-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 4px 8px;
+}
+
+.avatar-feed-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.avatar-feed-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--coral);
+    background: var(--coral-soft);
+    border: 1px solid rgba(255, 107, 87, 0.3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+}
+
+.avatar-feed-frame {
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--border-soft);
+    line-height: 0;
+}
+
+.avatar-feed-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: saturate(1.02) contrast(1.02);
+}
+
+.avatar-feed-scanline {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(79, 176, 165, 0.06) 50%, transparent 100%);
+    pointer-events: none;
+}
+
+.avatar-feed-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--amber);
+    opacity: 0.85;
+}
+
+.avatar-feed-corner.tl { top: 6px; left: 6px; border-right: none; border-bottom: none; }
+.avatar-feed-corner.br { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+
 .board-row {
     display: flex;
     justify-content: space-between;
@@ -735,6 +807,12 @@ a.contact-row:hover {
         grid-template-columns: 1fr;
     }
 
+    .avatar-feed-frame img {
+        max-height: 340px;
+        object-fit: cover;
+        object-position: top center;
+    }
+
     .service-grid {
         grid-template-columns: 1fr;
     }
@@ -819,6 +897,18 @@ a.contact-row:hover {
                 </div>
 
                 <div class="hero-board">
+                    <div class="avatar-feed">
+                        <div class="avatar-feed-head">
+                            <span class="avatar-feed-label"><span class="pulse-dot small"></span> profile.feed</span>
+                            <span class="avatar-feed-tag">LIVE</span>
+                        </div>
+                        <div class="avatar-feed-frame">
+                            <img src="img/02.jpeg" alt="Photo de Papa Magueye Fam">
+                            <div class="avatar-feed-scanline"></div>
+                            <span class="avatar-feed-corner tl"></span>
+                            <span class="avatar-feed-corner br"></span>
+                        </div>
+                    </div>
                     <div class="board-row">
                         <span class="board-key">rôle_visé</span>
                         <span class="board-val">fullStack Developer / AppSec</span>
